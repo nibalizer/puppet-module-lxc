@@ -1,0 +1,15 @@
+# 
+# /etc/fstab: static file system information
+#
+# <file system>	<dir>	<type>	<options>	<dump>	<pass>
+tmpfs		/tmp	tmpfs	nodev,nosuid	0	0
+none /media/buttery/baz.cat.pdx.edu/dev/pts devpts defaults 0 0
+none /media/buttery/baz.cat.pdx.edu/proc    proc   defaults 0 0
+none /media/buttery/baz.cat.pdx.edu/sys     sysfs  defaults 0 0
+none /media/buttery/baz.cat.pdx.edu/dev/shm tmpfs  defaults 0 0
+
+# I map in shared directories from my controlling host's /etc/fstab
+# /media/lxc/$fqdn 	/media/buttery/$fqdn 	bind	0 0
+auto /media/lxc/baz.cat.pdx.edu /media/buttery/baz.cat.pdx.edu bind 0 0
+# of course that assumes that the controlling host's UIDs and GIDs
+# are the same in the container for those shares.

@@ -1,0 +1,44 @@
+lxc.utsname = <%= name %>
+
+lxc.network.type = veth
+lxc.network.flags = up
+lxc.network.link = br0
+lxc.network.hwaddr = <%= ("%02x"%((rand*64).to_i*4|2))+(0..4).inject(""){|s,x|s+":%02x"%(rand*256).to_i} %>
+lxc.network.ipv4 = 0.0.0.0
+lxc.network.name = eth0
+
+lxc.network.type = veth
+lxc.network.flags = up
+lxc.network.link = br1
+lxc.network.hwaddr = <%= ("%02x"%((rand*64).to_i*4|2))+(0..4).inject(""){|s,x|s+":%02x"%(rand*256).to_i} %>
+lxc.network.ipv4 = 0.0.0.0
+lxc.network.name = eth1
+
+lxc.cgroup.devices.deny = a          # Deny all access to devices
+lxc.cgroup.devices.allow = c 4:5 rwm # /dev/tty1
+lxc.cgroup.devices.allow = c 4:6 rwm # /dev/tty2
+lxc.tty = 1
+#lxc.pseudo = 1024
+
+lxc.cgroup.devices.deny = a # Deny all access to devices
+
+lxc.cgroup.devices.allow = c 1:3 rwm # dev/null
+lxc.cgroup.devices.allow = c 1:5 rwm # dev/zero
+
+lxc.cgroup.devices.allow = c 5:1 rwm # dev/console
+lxc.cgroup.devices.allow = c 5:0 rwm # dev/tty
+#punting on this for now
+#lxc.cgroup.devices.allow = c 4:6 rwm # dev/tty9
+#lxc.cgroup.devices.allow = c 4:6 rwm # dev/tty10
+
+lxc.cgroup.devices.allow = c 1:9 rwm # dev/urandom
+lxc.cgroup.devices.allow = c 1:8 rwm # dev/random
+lxc.cgroup.devices.allow = c 136:* rwm # dev/pts/*
+lxc.cgroup.devices.allow = c 5:2 rwm # dev/pts/ptmx
+
+# No idea what this is .. dev/bsg/0:0:0:0 ???
+lxc.cgroup.devices.allow = c 254:0 rwm
+
+lxc.mount   = /etc/lxc/baz.cat.pdx.edu/fstab
+lxc.mount   = <%= data_dir %>
+lxc.rootfs  = /media/buttery/baz.cat.pdx.edu/
